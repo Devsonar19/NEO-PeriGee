@@ -62,12 +62,12 @@ export const NasaApiKeyModal: React.FC<NasaApiKeyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/92 backdrop-blur-2xl animate-in fade-in duration-200">
       <div 
         className="w-full max-w-lg rounded-2xl border p-5 sm:p-6 shadow-2xl flex flex-col gap-4 relative max-h-[90vh] overflow-y-auto"
         style={{
-          backgroundColor: theme === 'deep-space' ? '#1d1f3a' : '#ffffff',
-          borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+          backgroundColor: theme === 'deep-space' ? '#14162a' : '#ffffff',
+          borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
           color: theme === 'deep-space' ? '#f1f5f9' : '#0f172a'
         }}
       >
@@ -92,7 +92,13 @@ export const NasaApiKeyModal: React.FC<NasaApiKeyModalProps> = ({
         </div>
 
         {/* Live Status Overview */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-telemetry">
+        <div 
+          className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3 rounded-xl border text-xs font-telemetry"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#1a1c34' : '#f8fafc',
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+          }}
+        >
           <div>
             <span className="opacity-50 text-[10px] block uppercase">Feed Status</span>
             <div className="flex items-center gap-1.5 font-bold mt-0.5">

@@ -103,6 +103,7 @@ export default function App() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isKineticLabOpen, setIsKineticLabOpen] = useState<boolean>(false);
   const [isNasaKeyModalOpen, setIsNasaKeyModalOpen] = useState<boolean>(false);
+  const [isMobileDetailsOpen, setIsMobileDetailsOpen] = useState<boolean>(false);
 
   // Sync theme with document element
   useEffect(() => {
@@ -139,6 +140,8 @@ export default function App() {
         const apophis = response.objects.find((n) => n.name.includes('Apophis'));
         setSelectedNeo(apophis || response.objects[0]);
       }
+      // Never throw the details drawer on mobile on initial load or on refresh
+      setIsMobileDetailsOpen(false);
     } catch {
       // Handled in neoService fallback
     } finally {
@@ -154,6 +157,7 @@ export default function App() {
   // Handle asteroid selection with optional telemetry audio
   const handleSelectNeo = (neo: NeoObject) => {
     setSelectedNeo(neo);
+    setIsMobileDetailsOpen(true);
     if (!isAudioMuted) {
       if (neo.is_potentially_hazardous_asteroid) {
         playHazardAlert();
@@ -205,6 +209,7 @@ export default function App() {
   // Navigation tab switcher (syncs hash, closes mobile sidebar, and scrolls smoothly)
   const handleNavigateTab = (tab: NavigationTab) => {
     setActiveTab(tab);
+    setIsMobileDetailsOpen(false);
     if (window.location.hash !== `#${tab}`) {
       window.history.pushState(null, '', `#${tab}`);
     }
@@ -448,22 +453,27 @@ export default function App() {
             )}
 
             {/* Mobile / Tablet Slide-Up Drawer for Selected Asteroid */}
-            {selectedNeo && activeTab === 'telemetry-dashboard' && (
+            {selectedNeo && isMobileDetailsOpen && activeTab === 'telemetry-dashboard' && (
               <div 
-                className="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col justify-end p-2 sm:p-4 animate-in fade-in duration-200"
-                onClick={() => setSelectedNeo(null)}
+                className="lg:hidden fixed inset-0 z-50 bg-black/92 backdrop-blur-2xl flex flex-col justify-end p-2 sm:p-4 animate-in fade-in duration-200"
+                onClick={() => setIsMobileDetailsOpen(false)}
               >
                 <div 
-                  className="max-h-[82vh] overflow-y-auto w-full rounded-2xl shadow-2xl"
+                  className="max-h-[85vh] overflow-y-auto w-full rounded-2xl shadow-2xl border border-white/15"
+                  style={{
+                    backgroundColor: theme === 'deep-space' ? '#181a30' : '#ffffff',
+                    color: theme === 'deep-space' ? '#F8FAFC' : '#1d1f3a'
+                  }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <NeoDetailsPane
                     theme={theme}
                     neo={selectedNeo}
-                    onClose={() => setSelectedNeo(null)}
+                    onClose={() => setIsMobileDetailsOpen(false)}
                     onOpenKineticLab={(neo) => {
                       if (neo) setSelectedNeo(neo);
-                      setIsKineticLabOpen(true);
+                      setIsMobileDetailsOpen(false);
+                      handleNavigateTab('impact-assessment');
                     }}
                     isDrawerOnMobile={true}
                   />

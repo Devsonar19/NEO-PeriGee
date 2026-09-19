@@ -68,13 +68,18 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
 
   return (
     <div 
-      className={`glass-panel rounded-2xl p-4 sm:p-5 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-6rem)] shadow-2xl border border-white/10 ${
-        isDrawerOnMobile ? 'w-full' : 'w-full'
+      className={`rounded-2xl p-4 sm:p-5 flex flex-col gap-4 shadow-2xl border ${
+        isDrawerOnMobile ? 'w-full max-h-none overflow-visible' : 'w-full max-h-[calc(100vh-6rem)] overflow-y-auto'
       } ${isHazardous ? 'hazard-pulse' : ''}`}
+      style={{
+        backgroundColor: theme === 'deep-space' ? '#181a30' : '#ffffff',
+        borderColor: isHazardous ? 'rgba(244, 123, 123, 0.4)' : 'rgba(217, 180, 58, 0.3)',
+        color: theme === 'deep-space' ? '#F8FAFC' : '#1d1f3a'
+      }}
       id="neo-details-pane"
     >
       {/* Header */}
-      <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
+      <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3 shrink-0">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <span className={`w-3 h-3 rounded-full ${isHazardous ? 'bg-[#f47b7b] animate-pulse' : 'bg-[#d9b43a]'}`} />
@@ -111,7 +116,13 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
       </div>
 
       {/* Orbital Rendezvous Overview */}
-      <div className="grid grid-cols-2 gap-2 bg-white/5 p-3 rounded-xl font-telemetry text-xs border border-white/5">
+      <div 
+        className="grid grid-cols-2 gap-2 p-3 rounded-xl font-telemetry text-xs border shrink-0"
+        style={{
+          backgroundColor: theme === 'deep-space' ? '#212442' : '#f1f5f9',
+          borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+        }}
+      >
         <div>
           <span className="opacity-50 text-[10px] uppercase block">Perigee Date</span>
           <span className="font-semibold">{neo.close_approach_data?.[0]?.close_approach_date || '2026-09-24'}</span>
@@ -134,42 +145,54 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
 
       {/* Kinetic Impact Engine Yield Card */}
       <div 
-        className="p-4 rounded-xl border relative overflow-hidden flex flex-col gap-2"
+        className="p-4 rounded-xl border relative z-10 shrink-0 flex flex-col gap-2.5 shadow-lg min-h-[140px]"
         style={{
-          backgroundColor: isHazardous 
-            ? 'rgba(244, 123, 123, 0.08)' 
-            : 'rgba(217, 180, 58, 0.06)',
-          borderColor: isHazardous ? 'rgba(244, 123, 123, 0.3)' : 'rgba(217, 180, 58, 0.2)'
+          backgroundColor: theme === 'deep-space' 
+            ? (isHazardous ? '#2a1a2b' : '#26241a') 
+            : (isHazardous ? '#FEF2F2' : '#FFFBEB'),
+          borderColor: isHazardous ? 'rgba(244, 123, 123, 0.55)' : 'rgba(217, 180, 58, 0.45)'
         }}
       >
         <div className="flex items-center justify-between">
-          <span className="font-headline text-[10px] font-bold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
+          <span className="font-headline text-[10px] font-bold uppercase tracking-wider opacity-90 flex items-center gap-1.5">
             <Flame size={14} className={isHazardous ? 'text-[#f47b7b]' : 'text-[#d9b43a]'} />
             Kinetic Impact Engine Yield
           </span>
-          <span className="text-[10px] font-telemetry px-2 py-0.5 rounded-full bg-white/10 font-bold">
+          <span className="text-[10px] font-telemetry px-2 py-0.5 rounded-full bg-white/10 font-bold border border-white/10">
             E = ½mv²
           </span>
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="font-telemetry text-3xl sm:text-4xl font-bold tracking-tight text-[#d9b43a]">
+          <span className="font-telemetry text-2xl sm:text-3xl font-bold tracking-tight text-[#d9b43a]">
             {liveImpact.megatons_tnt.toLocaleString()}
           </span>
-          <span className="font-telemetry text-sm font-semibold opacity-80">
+          <span className="font-telemetry text-xs sm:text-sm font-semibold opacity-85">
             Megatons TNT
           </span>
         </div>
 
-        <p className="text-xs font-body italic opacity-85 leading-relaxed bg-black/20 p-2 rounded-lg">
+        <p 
+          className="text-xs font-body italic opacity-95 leading-relaxed p-2.5 rounded-lg border"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#141628' : 'rgba(0,0,0,0.05)',
+            borderColor: theme === 'deep-space' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'
+          }}
+        >
           {liveImpact.historical_comparison}
         </p>
       </div>
 
       {/* Real-time Footprint & Crater Parameters */}
-      <div className="grid grid-cols-2 gap-2.5">
-        <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-          <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+      <div className="grid grid-cols-2 gap-2.5 shrink-0">
+        <div 
+          className="p-3 rounded-xl border flex flex-col"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#212442' : '#f8fafc',
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
             <MapPin size={12} className="text-[#f47b7b]" /> Crater Diameter
           </span>
           <span className="font-telemetry text-base sm:text-lg font-bold text-current mt-0.5">
@@ -180,8 +203,14 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
           <span className="text-[10px] opacity-60">Depth: ~{liveImpact.crater_depth_meters.toFixed(0)} m</span>
         </div>
 
-        <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-          <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+        <div 
+          className="p-3 rounded-xl border flex flex-col"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#212442' : '#f8fafc',
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
             <Activity size={12} className="text-[#d9b43a]" /> Blast Airburst (5 psi)
           </span>
           <span className="font-telemetry text-base sm:text-lg font-bold text-[#d9b43a] mt-0.5">
@@ -190,8 +219,14 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
           <span className="text-[10px] opacity-60">Severe structural collapse zone</span>
         </div>
 
-        <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-          <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+        <div 
+          className="p-3 rounded-xl border flex flex-col"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#212442' : '#f8fafc',
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
             <Sparkles size={12} className="text-[#d9b43a]" /> Thermal Fireball
           </span>
           <span className="font-telemetry text-base sm:text-lg font-bold text-[#d9b43a] mt-0.5">
@@ -200,8 +235,14 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
           <span className="text-[10px] opacity-60">3rd-degree thermal flash</span>
         </div>
 
-        <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-          <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+        <div 
+          className="p-3 rounded-xl border flex flex-col"
+          style={{
+            backgroundColor: theme === 'deep-space' ? '#212442' : '#f8fafc',
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
             <Scale size={12} className="text-[#7c809c]" /> Seismic Richter
           </span>
           <span className="font-telemetry text-base sm:text-lg font-bold text-[#7c809c] mt-0.5">
@@ -212,7 +253,13 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
       </div>
 
       {/* Interactive Physics Param Controls */}
-      <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex flex-col gap-3">
+      <div 
+        className="p-3.5 rounded-xl border flex flex-col gap-3 shrink-0"
+        style={{
+          backgroundColor: theme === 'deep-space' ? '#212442' : '#f8fafc',
+          borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'
+        }}
+      >
         <div className="flex items-center justify-between">
           <span className="font-headline text-xs font-bold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
             <Sliders size={14} className="text-[#d9b43a]" />
@@ -274,7 +321,7 @@ export const NeoDetailsPane: React.FC<NeoDetailsPaneProps> = ({
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col gap-2 pt-1">
+      <div className="flex flex-col gap-2 pt-1 shrink-0 pb-2">
         <button
           onClick={() => onOpenKineticLab(neo)}
           className="w-full py-2.5 px-4 rounded-xl font-headline font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-[#f47b7b] to-[#d9b43a] hover:opacity-90 text-[#1d1f3a] shadow-lg shadow-[#1d1f3a]/30 transition-all active:scale-98 flex items-center justify-center gap-2"

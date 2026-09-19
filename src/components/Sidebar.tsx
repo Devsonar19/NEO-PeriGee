@@ -131,7 +131,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {isOpenMobile && (
         <div 
           onClick={onCloseMobile}
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md md:hidden transition-opacity duration-200"
+          className="fixed inset-0 z-40 bg-black/92 backdrop-blur-2xl md:hidden transition-opacity duration-200"
           aria-hidden="true"
         />
       )}
@@ -147,11 +147,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             : '-translate-x-full opacity-0 invisible pointer-events-none md:pointer-events-auto md:opacity-100 md:visible md:translate-x-0 md:shadow-none'
         }`}
         style={{
-          backgroundColor: theme === 'deep-space' ? 'rgba(29, 31, 58, 0.95)' : 'rgba(245, 247, 252, 0.95)',
+          backgroundColor: theme === 'deep-space' ? '#14162a' : '#ffffff',
           borderColor: 'rgba(124, 128, 156, 0.2)',
           boxShadow: theme === 'deep-space' 
-            ? 'inset -1px 0 0 0 rgba(255, 255, 255, 0.04), 8px 0 32px 0 rgba(10, 11, 24, 0.45)' 
-            : 'inset -1px 0 0 0 rgba(0, 0, 0, 0.02), 8px 0 32px 0 rgba(29, 31, 58, 0.04)'
+            ? 'inset -1px 0 0 0 rgba(255, 255, 255, 0.04), 8px 0 32px 0 rgba(10, 11, 24, 0.65)' 
+            : 'inset -1px 0 0 0 rgba(0, 0, 0, 0.02), 8px 0 32px 0 rgba(29, 31, 58, 0.08)'
         }}
       >
         <div className="flex flex-col gap-3">

@@ -55,11 +55,13 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/92 backdrop-blur-2xl overflow-y-auto">
       <div 
-        className="glass-panel w-full max-w-4xl rounded-2xl p-5 sm:p-7 flex flex-col gap-5 my-auto border border-white/15 shadow-2xl relative"
+        className="w-full max-w-4xl rounded-2xl p-5 sm:p-7 flex flex-col gap-5 my-auto border shadow-2xl relative"
         style={{
-          backgroundColor: theme === 'deep-space' ? 'rgba(8, 12, 24, 0.95)' : 'rgba(240, 244, 248, 0.98)'
+          backgroundColor: theme === 'deep-space' ? '#14162a' : '#ffffff',
+          borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
+          color: theme === 'deep-space' ? '#F8FAFC' : '#1d1f3a'
         }}
         id="kinetic-calculator-modal"
       >
@@ -122,7 +124,13 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
         </div>
 
         {/* Input Parameters Controls Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white/5 p-4 sm:p-5 rounded-2xl border border-white/10">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 sm:p-5 rounded-2xl border"
+          style={{ 
+            backgroundColor: theme === 'deep-space' ? '#1a1c34' : '#f8fafc', 
+            borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)' 
+          }}
+        >
           {/* Diameter Input */}
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between items-center text-xs font-telemetry">
@@ -237,8 +245,14 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
 
           {/* Detailed Damage Zones Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-              <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+            <div 
+              className="p-3.5 rounded-xl border flex flex-col"
+              style={{
+                backgroundColor: theme === 'deep-space' ? '#1f2240' : '#f1f5f9',
+                borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
+              }}
+            >
+              <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
                 <MapPin size={12} className="text-[#f47b7b]" /> Crater Diameter
               </span>
               <span className="font-telemetry text-lg sm:text-xl font-bold text-current mt-1">
@@ -249,8 +263,14 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
               <span className="text-[10px] opacity-60">Depth: {result.crater_depth_meters.toFixed(0)} m</span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-              <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+            <div 
+              className="p-3.5 rounded-xl border flex flex-col"
+              style={{
+                backgroundColor: theme === 'deep-space' ? '#1f2240' : '#f1f5f9',
+                borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
+              }}
+            >
+              <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
                 <Activity size={12} className="text-[#d9b43a]" /> Blast Wave (5 psi)
               </span>
               <span className="font-telemetry text-lg sm:text-xl font-bold text-[#d9b43a] mt-1">
@@ -259,8 +279,14 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
               <span className="text-[10px] opacity-60">Complete building collapse</span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-              <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+            <div 
+              className="p-3.5 rounded-xl border flex flex-col"
+              style={{
+                backgroundColor: theme === 'deep-space' ? '#1f2240' : '#f1f5f9',
+                borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
+              }}
+            >
+              <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
                 <Sparkles size={12} className="text-[#d9b43a]" /> Thermal Fireball
               </span>
               <span className="font-telemetry text-lg sm:text-xl font-bold text-[#d9b43a] mt-1">
@@ -269,8 +295,14 @@ export const KineticCalculatorModal: React.FC<KineticCalculatorModalProps> = ({
               <span className="text-[10px] opacity-60">Instant ignition radius</span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 flex flex-col">
-              <span className="text-[10px] font-headline uppercase font-bold opacity-60 flex items-center gap-1">
+            <div 
+              className="p-3.5 rounded-xl border flex flex-col"
+              style={{
+                backgroundColor: theme === 'deep-space' ? '#1f2240' : '#f1f5f9',
+                borderColor: theme === 'deep-space' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
+              }}
+            >
+              <span className="text-[10px] font-headline uppercase font-bold opacity-75 flex items-center gap-1">
                 <Scale size={12} className="text-[#7c809c]" /> Seismic Ground Shock
               </span>
               <span className="font-telemetry text-lg sm:text-xl font-bold text-[#7c809c] mt-1">
