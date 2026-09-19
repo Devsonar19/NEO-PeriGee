@@ -14,7 +14,6 @@ import {
   Radio,
   ExternalLink,
   Target,
-  Volume2,
   AlertOctagon
 } from 'lucide-react';
 import { NeoObject, ThemeMode, AsteroidComposition } from '../types';

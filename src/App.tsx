@@ -49,11 +49,6 @@ import {
   FilterCategory 
 } from './types';
 import { 
-  playTelemetryPing, 
-  playHazardAlert, 
-  setAudioEnabled 
-} from './utils/audio';
-import { 
   Satellite, 
   Radio, 
   Orbit
@@ -99,7 +94,6 @@ export default function App() {
     apiKeyType: 'demo'
   });
 
-  const [isAudioMuted, setIsAudioMuted] = useState<boolean>(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isKineticLabOpen, setIsKineticLabOpen] = useState<boolean>(false);
   const [isNasaKeyModalOpen, setIsNasaKeyModalOpen] = useState<boolean>(false);
@@ -154,35 +148,15 @@ export default function App() {
     loadTelemetry();
   }, [loadTelemetry]);
 
-  // Handle asteroid selection with optional telemetry audio
+  // Handle asteroid selection
   const handleSelectNeo = (neo: NeoObject) => {
     setSelectedNeo(neo);
     setIsMobileDetailsOpen(true);
-    if (!isAudioMuted) {
-      if (neo.is_potentially_hazardous_asteroid) {
-        playHazardAlert();
-      } else {
-        playTelemetryPing(880, 0.08);
-      }
-    }
-  };
-
-  // Toggle audio synthesizer
-  const handleToggleAudio = () => {
-    const nextState = !isAudioMuted;
-    setIsAudioMuted(nextState);
-    setAudioEnabled(!nextState);
-    if (!nextState) {
-      playTelemetryPing(1040, 0.1);
-    }
   };
 
   // Toggle theme between Deep Space and Frosted Atmosphere
   const handleToggleTheme = () => {
     setTheme((prev) => (prev === 'deep-space' ? 'frosted-atmosphere' : 'deep-space'));
-    if (!isAudioMuted) {
-      playTelemetryPing(620, 0.08);
-    }
   };
 
   // Synchronize browser URL hash and history state with activeTab state
@@ -215,9 +189,6 @@ export default function App() {
     }
     setIsMobileSidebarOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (!isAudioMuted) {
-      playTelemetryPing(740, 0.06);
-    }
   };
 
   // Compute minimum lunar distance in the dataset
@@ -264,13 +235,11 @@ export default function App() {
           onOpenNasaKeyModal={() => setIsNasaKeyModalOpen(true)}
           apiKeyType={telemetryMeta.apiKeyType}
           dataSource={telemetryMeta.source}
-          isAudioMuted={isAudioMuted}
-          onToggleAudio={handleToggleAudio}
           onToggleTheme={handleToggleTheme}
         />
 
-        {/* Primary Content Container: md:pl-64 guarantees 256px lane for the fixed sidebar, eliminating screen overlap */}
-        <div className="flex-1 md:pl-64 w-full min-w-0 flex flex-col transition-all duration-300">
+        {/* Primary Content Container: md:pl-72 guarantees 288px lane for the fixed sidebar, eliminating screen overlap */}
+        <div className="flex-1 md:pl-72 w-full min-w-0 flex flex-col transition-all duration-300">
           <main className="flex-1 w-full px-3 sm:px-6 lg:px-8 py-6 pb-28 md:pb-12 max-w-[1600px] mx-auto overflow-x-hidden">
           <div className="flex flex-col gap-6 w-full">
             

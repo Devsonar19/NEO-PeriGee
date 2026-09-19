@@ -8,8 +8,6 @@ import {
   Compass, 
   Layers,
   X,
-  Volume2,
-  VolumeX,
   Sun,
   Moon
 } from 'lucide-react';
@@ -27,8 +25,6 @@ interface SidebarProps {
   onOpenNasaKeyModal?: () => void;
   apiKeyType?: 'custom' | 'env' | 'demo';
   dataSource?: 'live' | 'cache' | 'offline_fallback';
-  isAudioMuted?: boolean;
-  onToggleAudio?: () => void;
   onToggleTheme?: () => void;
 }
 
@@ -44,8 +40,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenNasaKeyModal,
   apiKeyType = 'demo',
   dataSource = 'live',
-  isAudioMuted = false,
-  onToggleAudio,
   onToggleTheme
 }) => {
   const sidebarRef = useRef<HTMLElement>(null);
@@ -136,12 +130,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-      {/* Sidebar Container: Dedicated 256px Lane with Apple Glass Styling */}
+      {/* Sidebar Container: Dedicated 288px (w-72) Lane with Apple Glass Styling */}
       <aside
         ref={sidebarRef}
         onScroll={handleScroll}
         aria-label="Mission Navigation"
-        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 md:w-64 z-[45] flex flex-col justify-between py-4 px-3 border-r transition-all duration-300 backdrop-blur-2xl overflow-y-auto ${
+        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 md:w-72 z-[45] flex flex-col justify-between py-4 px-3.5 border-r transition-all duration-300 backdrop-blur-2xl overflow-y-auto ${
           isOpenMobile 
             ? 'translate-x-0 opacity-100 visible shadow-2xl pointer-events-auto' 
             : '-translate-x-full opacity-0 invisible pointer-events-none md:pointer-events-auto md:opacity-100 md:visible md:translate-x-0 md:shadow-none'
@@ -161,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               Mission Navigation
             </span>
             <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-telemetry px-1.5 py-0.5 rounded-md bg-white/[0.05] border border-white/10 uppercase">
+              <span className="text-[9px] font-telemetry px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/10 uppercase font-semibold">
                 {dataSource === 'live' ? 'JPL FEED' : 'OFFLINE'}
               </span>
               {/* Mobile Close Button (<768px) */}
@@ -238,92 +232,66 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* Live Mission Telemetry Readouts, System Audio/Theme & NASA API Status */}
-        <div className="flex flex-col gap-2.5 pt-4">
-          {/* Sound & Theme Console Controls shifted to side panel */}
-          <div 
-            className="p-3 rounded-2xl border flex flex-col gap-2.5 backdrop-blur-xl"
-            style={{
-              backgroundColor: theme === 'deep-space' ? 'rgba(76, 79, 123, 0.22)' : 'rgba(255, 255, 255, 0.75)',
-              borderColor: 'rgba(124, 128, 156, 0.2)',
-              boxShadow: theme === 'deep-space' ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.8)'
-            }}
-          >
-            <div className="flex items-center justify-between px-0.5">
-              <span className="text-[10px] font-headline font-bold uppercase tracking-wider opacity-50">
-                Console Preferences
-              </span>
-              <span className="text-[9px] font-telemetry px-1.5 py-0.5 rounded-full bg-[#d9b43a]/10 text-[#d9b43a] font-semibold border border-[#d9b43a]/20">
-                AUDIO & THEME
-              </span>
-            </div>
+        {/* Live Mission Telemetry Readouts, Theme & NASA API Status */}
+        <div className="flex flex-col gap-3 pt-4 pb-6">
+          {/* Theme Display Console Control */}
+          {onToggleTheme && (
+            <div 
+              className="p-3 rounded-2xl border flex flex-col gap-2 backdrop-blur-xl"
+              style={{
+                backgroundColor: theme === 'deep-space' ? 'rgba(76, 79, 123, 0.22)' : 'rgba(255, 255, 255, 0.75)',
+                borderColor: 'rgba(124, 128, 156, 0.2)',
+                boxShadow: theme === 'deep-space' ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.8)'
+              }}
+            >
+              <div className="flex items-center justify-between px-0.5">
+                <span className="text-[10px] font-headline font-bold uppercase tracking-wider opacity-60">
+                  Interface Display
+                </span>
+                <span className="text-[9px] font-telemetry px-2 py-0.5 rounded-full bg-[#d9b43a]/10 text-[#d9b43a] font-semibold border border-[#d9b43a]/20 uppercase">
+                  Theme
+                </span>
+              </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              {/* Sound Audio Toggle */}
-              {onToggleAudio && (
-                <button
-                  onClick={onToggleAudio}
-                  className={`flex items-center gap-2 p-2 rounded-xl border text-left transition-all active:scale-95 min-h-[44px] ${
-                    !isAudioMuted
-                      ? theme === 'deep-space'
-                        ? 'bg-[#d9b43a]/15 border-[#d9b43a]/30 text-[#d9b43a] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]'
-                        : 'bg-[#d9b43a]/15 border-[#d9b43a]/30 text-[#a88214] font-semibold'
-                      : 'bg-white/[0.04] border-white/10 opacity-70 hover:opacity-100 text-current'
-                  }`}
-                  id="sidebarAudioToggleBtn"
-                  title={isAudioMuted ? 'Acoustic Telemetry: Muted (Click to enable)' : 'Acoustic Telemetry: Active (Click to mute)'}
-                >
-                  <div className={`p-1.5 rounded-lg shrink-0 ${!isAudioMuted ? 'bg-[#d9b43a]/20 text-[#d9b43a]' : 'bg-white/10 opacity-60'}`}>
-                    {!isAudioMuted ? <Volume2 size={15} /> : <VolumeX size={15} />}
-                  </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[11px] font-headline font-bold leading-tight truncate">
-                      {!isAudioMuted ? 'Sound ON' : 'Muted'}
-                    </span>
-                    <span className="text-[9px] font-telemetry opacity-60 uppercase truncate">
-                      {!isAudioMuted ? 'Telemetry' : 'Silent'}
-                    </span>
-                  </div>
-                </button>
-              )}
-
-              {/* Theme Mode Toggle */}
-              {onToggleTheme && (
-                <button
-                  onClick={onToggleTheme}
-                  className={`flex items-center gap-2 p-2 rounded-xl border text-left transition-all active:scale-95 min-h-[44px] ${
-                    theme === 'deep-space'
-                      ? 'bg-white/[0.04] border-white/10 hover:border-[#d9b43a]/40 text-current'
-                      : 'bg-white border-slate-200 text-slate-800 shadow-sm'
-                  }`}
-                  id="sidebarThemeToggleBtn"
-                  title={`Switch to ${theme === 'deep-space' ? 'Frosted Atmosphere (Light)' : 'Deep Space (Dark)'} Theme`}
-                >
-                  <div className="p-1.5 rounded-lg shrink-0 bg-[#d9b43a]/20 text-[#d9b43a]">
+              <button
+                onClick={onToggleTheme}
+                className={`flex items-center justify-between w-full p-2.5 rounded-xl border text-left transition-all active:scale-98 min-h-[44px] ${
+                  theme === 'deep-space'
+                    ? 'bg-white/[0.05] border-white/10 hover:border-[#d9b43a]/40 text-current'
+                    : 'bg-white border-slate-200 text-slate-800 shadow-sm'
+                }`}
+                id="sidebarThemeToggleBtn"
+                title={`Switch to ${theme === 'deep-space' ? 'Frosted Atmosphere (Light)' : 'Deep Space (Dark)'} Theme`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="p-2 rounded-lg shrink-0 bg-[#d9b43a]/20 text-[#d9b43a]">
                     {theme === 'deep-space' ? (
-                      <Sun size={15} className="text-[#d9b43a]" />
+                      <Sun size={16} className="text-[#d9b43a]" />
                     ) : (
-                      <Moon size={15} className="text-[#4c4f7b]" />
+                      <Moon size={16} className="text-[#4c4f7b]" />
                     )}
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="text-[11px] font-headline font-bold leading-tight truncate">
-                      {theme === 'deep-space' ? 'Deep Space' : 'Atmosphere'}
+                    <span className="text-xs font-headline font-bold leading-tight truncate">
+                      {theme === 'deep-space' ? 'Deep Space (Dark)' : 'Atmosphere (Light)'}
                     </span>
-                    <span className="text-[9px] font-telemetry opacity-60 uppercase truncate">
-                      {theme === 'deep-space' ? 'Dark' : 'Light'}
+                    <span className="text-[10px] font-telemetry opacity-60 leading-tight truncate mt-0.5">
+                      {theme === 'deep-space' ? 'Astronomical Contrast' : 'Refined Light Mode'}
                     </span>
                   </div>
-                </button>
-              )}
+                </div>
+                <span className="text-[10px] font-telemetry font-bold px-2 py-0.5 rounded-lg shrink-0 bg-[#d9b43a]/15 text-[#d9b43a] border border-[#d9b43a]/30">
+                  Toggle
+                </span>
+              </button>
             </div>
-          </div>
+          )}
 
           {/* NASA API Key Status Button */}
           {onOpenNasaKeyModal && (
             <button
               onClick={onOpenNasaKeyModal}
-              className="p-3 rounded-2xl border flex items-center justify-between text-left transition-all active:scale-98 hover:border-[#d9b43a]/40 backdrop-blur-xl"
+              className="p-3 rounded-2xl border flex flex-col gap-2 text-left transition-all active:scale-98 hover:border-[#d9b43a]/40 backdrop-blur-xl w-full"
               style={{
                 backgroundColor: theme === 'deep-space' ? 'rgba(76, 79, 123, 0.22)' : 'rgba(255, 255, 255, 0.75)',
                 borderColor: 'rgba(124, 128, 156, 0.2)',
@@ -332,62 +300,65 @@ export const Sidebar: React.FC<SidebarProps> = ({
               title="Configure NASA NeoWs API Key"
               id="sidebarNasaApiBtn"
             >
-              <div className="flex flex-col">
-                <span className="text-[10px] font-headline uppercase font-bold opacity-50">NASA NeoWs API</span>
-                <span className="text-xs font-telemetry font-bold text-[#d9b43a]">
-                  {apiKeyType === 'custom' ? 'Personal Key (1k/hr)' : apiKeyType === 'env' ? 'Env Config Key' : 'DEMO KEY (30/hr)'}
+              <div className="flex items-center justify-between w-full">
+                <span className="text-[10px] font-headline uppercase font-bold opacity-60">NASA NeoWs API</span>
+                <span className="text-[10px] font-headline font-semibold px-2 py-0.5 rounded-full bg-[#d9b43a]/15 text-[#d9b43a] border border-[#d9b43a]/25 shrink-0">
+                  Configure
                 </span>
               </div>
-              <span className="text-[10px] font-headline font-semibold px-2 py-0.5 rounded-full bg-[#d9b43a]/15 text-[#d9b43a] border border-[#d9b43a]/25">
-                Configure
-              </span>
+              <div className="flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full shrink-0 ${apiKeyType === 'custom' ? 'bg-emerald-400' : 'bg-[#d9b43a] animate-pulse'}`} />
+                <span className="text-xs font-telemetry font-bold text-[#d9b43a] truncate">
+                  {apiKeyType === 'custom' ? 'Personal Key (1,000/hr)' : apiKeyType === 'env' ? 'Configured Env Key' : 'Demo Key (30 req/hr)'}
+                </span>
+              </div>
             </button>
           )}
 
           {/* Monitored Metrics Widget */}
           <div 
-            className="p-3 rounded-2xl border flex flex-col gap-2.5 backdrop-blur-xl"
+            className="p-3 rounded-2xl border flex flex-col gap-2 backdrop-blur-xl"
             style={{
               backgroundColor: theme === 'deep-space' ? 'rgba(76, 79, 123, 0.18)' : 'rgba(255, 255, 255, 0.65)',
               borderColor: 'rgba(124, 128, 156, 0.2)',
               boxShadow: theme === 'deep-space' ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.04)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.8)'
             }}
           >
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-headline text-[10px] uppercase font-bold opacity-60 flex items-center gap-1.5">
-                <Layers size={13} className="text-[#d9b43a]" /> Monitored NEOs
+            <div className="flex justify-between items-center py-0.5">
+              <span className="font-headline text-[11px] uppercase font-bold opacity-75 flex items-center gap-1.5">
+                <Layers size={13} className="text-[#d9b43a] shrink-0" /> Monitored NEOs
               </span>
-              <span className="font-telemetry font-bold text-emerald-400">
+              <span className="font-telemetry text-xs font-bold text-emerald-400 shrink-0">
                 {totalTracked.toLocaleString()}
               </span>
             </div>
 
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-headline text-[10px] uppercase font-bold opacity-60 flex items-center gap-1.5">
-                <AlertTriangle size={13} className="text-[#f47b7b]" /> Critical PHA
+            <div className="flex justify-between items-center py-0.5 border-t border-white/[0.06]">
+              <span className="font-headline text-[11px] uppercase font-bold opacity-75 flex items-center gap-1.5">
+                <AlertTriangle size={13} className="text-[#f47b7b] shrink-0" /> Critical PHA
               </span>
-              <span className="font-telemetry font-bold text-[#f47b7b]">
-                {criticalCount}
+              <span className="font-telemetry text-xs font-bold text-[#f47b7b] shrink-0">
+                {criticalCount} PHA
               </span>
             </div>
 
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-headline text-[10px] uppercase font-bold opacity-60 flex items-center gap-1.5">
-                <Compass size={13} className="text-[#d9b43a]" /> Closest Perigee
+            <div className="flex justify-between items-center py-0.5 border-t border-white/[0.06]">
+              <span className="font-headline text-[11px] uppercase font-bold opacity-75 flex items-center gap-1.5">
+                <Compass size={13} className="text-[#d9b43a] shrink-0" /> Closest Perigee
               </span>
-              <span className="font-telemetry font-bold text-[#d9b43a]">
+              <span className="font-telemetry text-xs font-bold text-[#d9b43a] shrink-0">
                 {closestDistanceLD.toFixed(3)} LD
               </span>
             </div>
           </div>
 
           {/* DSN Ground Link Station Status */}
-          <div className="px-2 py-1 flex items-center justify-between text-[11px] font-telemetry opacity-50">
+          <div className="px-2 py-1 flex items-center justify-between text-[10px] font-telemetry opacity-60">
             <span className="flex items-center gap-1.5">
-              <Radio size={12} className="text-emerald-400" />
+              <Radio size={12} className="text-emerald-400 shrink-0" />
               GOLDSTONE DSS-14
             </span>
-            <span>X-BAND</span>
+            <span className="font-semibold shrink-0">X-BAND 8.4 GHz</span>
           </div>
         </div>
       </aside>

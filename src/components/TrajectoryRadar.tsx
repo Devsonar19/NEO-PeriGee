@@ -582,18 +582,24 @@ export const TrajectoryRadar: React.FC<TrajectoryRadarProps> = ({
                   filter={isHazardous ? 'url(#radarRedGlow)' : undefined}
                 />
 
-                {/* Live Distance Label */}
-                <text 
-                  x={telem.x + 8} 
-                  y={telem.y - 4} 
-                  fill={isHazardous ? '#f47b7b' : (theme === 'deep-space' ? '#d9b43a' : '#4c4f7b')} 
-                  fontSize={isSelected || isHovered ? 11 : 9.5} 
-                  fontFamily="JetBrains Mono" 
-                  fontWeight={isSelected || isHazardous ? 'bold' : 'normal'}
-                  className="pointer-events-none drop-shadow-sm select-none"
-                >
-                  {neo.name.replace(/[()]/g, '').split(' ')[0]} [{telem.distanceLunar.toFixed(2)} LD]
-                </text>
+                {/* Live Distance Label - only displayed on hover or selection to avoid radar crowding */}
+                {(isSelected || isHovered) && (
+                  <text 
+                    x={telem.x + 8} 
+                    y={telem.y - 4} 
+                    fill={isHazardous ? '#f47b7b' : (theme === 'deep-space' ? '#d9b43a' : '#4c4f7b')} 
+                    stroke={theme === 'deep-space' ? '#141629' : '#ffffff'}
+                    strokeWidth="3"
+                    strokeLinejoin="round"
+                    paintOrder="stroke fill"
+                    fontSize="11" 
+                    fontFamily="JetBrains Mono" 
+                    fontWeight="bold"
+                    className="pointer-events-none drop-shadow-sm select-none"
+                  >
+                    {neo.name.replace(/[()]/g, '').split(' ')[0]} [{telem.distanceLunar.toFixed(2)} LD]
+                  </text>
+                )}
               </g>
             );
           })}
@@ -616,98 +622,123 @@ export const TrajectoryRadar: React.FC<TrajectoryRadarProps> = ({
         </div>
       </div>
 
-      {/* Target Inspector & Telemetry Deck */}
+      {/* Target Inspector & Telemetry Deck - Clean 2-Tier Stack Eliminating Horizontal Overlap */}
       {activeInspectorTarget && inspectorTelemetry && (
         <div 
-          className="p-4 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-md shadow-lg"
+          className="p-4 sm:p-5 rounded-2xl border flex flex-col gap-4 backdrop-blur-md shadow-lg w-full"
           style={{
             backgroundColor: theme === 'deep-space' ? 'rgba(29, 31, 58, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-            borderColor: activeInspectorTarget.is_potentially_hazardous_asteroid ? 'rgba(244, 123, 123, 0.3)' : 'rgba(217, 180, 58, 0.25)'
+            borderColor: activeInspectorTarget.is_potentially_hazardous_asteroid ? 'rgba(244, 123, 123, 0.35)' : 'rgba(217, 180, 58, 0.25)'
           }}
         >
-          <div className="flex items-start sm:items-center gap-3">
-            <div className={`p-2.5 rounded-xl border ${
-              activeInspectorTarget.is_potentially_hazardous_asteroid 
-                ? 'bg-[#f47b7b]/20 text-[#f47b7b] border-[#f47b7b]/30' 
-                : 'bg-[#d9b43a]/20 text-[#d9b43a] border-[#d9b43a]/30'
-            }`}>
-              <Radio size={22} className="animate-pulse" />
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-headline font-bold text-base text-current">
-                  {activeInspectorTarget.name}
-                </h4>
-                {activeInspectorTarget.is_live_feed && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-telemetry bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    LIVE NASA FEED
-                  </span>
-                )}
-                {activeInspectorTarget.is_potentially_hazardous_asteroid && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-telemetry bg-[#f47b7b]/20 text-[#f47b7b] border border-[#f47b7b]/30">
-                    POTENTIALLY HAZARDOUS
-                  </span>
-                )}
+          {/* Top Row: Target Identification & Kinetic Lab Trigger */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+            <div className="flex items-start sm:items-center gap-3 min-w-0">
+              <div className={`p-2.5 rounded-xl border shrink-0 ${
+                activeInspectorTarget.is_potentially_hazardous_asteroid 
+                  ? 'bg-[#f47b7b]/20 text-[#f47b7b] border-[#f47b7b]/30' 
+                  : 'bg-[#d9b43a]/20 text-[#d9b43a] border-[#d9b43a]/30'
+              }`}>
+                <Radio size={22} className="animate-pulse" />
               </div>
 
-              <div className="flex items-center gap-3 text-xs opacity-70 mt-0.5 font-telemetry">
-                <span>Ref ID: #{activeInspectorTarget.id}</span>
-                <span>Class: {activeInspectorTarget.orbital_class || 'NEO'}</span>
-                <span>Abs Mag: {activeInspectorTarget.absolute_magnitude_h} H</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="font-headline font-bold text-base sm:text-lg text-current truncate">
+                    {activeInspectorTarget.name}
+                  </h4>
+                  {activeInspectorTarget.is_live_feed && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-telemetry bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                      LIVE NASA FEED
+                    </span>
+                  )}
+                  {activeInspectorTarget.is_potentially_hazardous_asteroid && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-telemetry bg-[#f47b7b]/20 text-[#f47b7b] border border-[#f47b7b]/30 shrink-0">
+                      POTENTIALLY HAZARDOUS
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2.5 text-xs opacity-75 mt-1 font-telemetry flex-wrap">
+                  <span>Ref ID: #{activeInspectorTarget.id}</span>
+                  <span className="opacity-40">&bull;</span>
+                  <span>Class: {activeInspectorTarget.orbital_class || 'NEO'}</span>
+                  <span className="opacity-40">&bull;</span>
+                  <span>Abs Mag: {activeInspectorTarget.absolute_magnitude_h} H</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Button: Load into Kinetic Lab */}
+            {onOpenKineticLab && (
+              <button
+                onClick={() => onOpenKineticLab(activeInspectorTarget)}
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-headline font-bold bg-[#f47b7b]/20 hover:bg-[#f47b7b]/30 text-[#f47b7b] border border-[#f47b7b]/40 transition-all active:scale-95 shrink-0 self-start sm:self-auto"
+              >
+                <Flame size={15} />
+                <span>Simulate Kinetic Impact</span>
+              </button>
+            )}
+          </div>
+
+          {/* Real-time Telemetry Values: Dedicated Full-Width 4-Column Grid with No Overlap */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 font-telemetry text-xs w-full pt-1 border-t border-white/10">
+            <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-w-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider opacity-60 truncate">
+                Instantaneous Range
+              </span>
+              <div className="mt-1">
+                <span className="text-sm sm:text-base font-extrabold text-[#d9b43a] block truncate">
+                  {inspectorTelemetry.distanceLunar.toFixed(3)} LD
+                </span>
+                <span className="text-[10px] opacity-60 block truncate mt-0.5">
+                  {inspectorTelemetry.distanceKm.toLocaleString()} km
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-w-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider opacity-60 truncate">
+                Range Rate ($dr/dt$)
+              </span>
+              <div className="mt-1">
+                <span className={`text-sm sm:text-base font-extrabold block truncate ${inspectorTelemetry.isApproaching ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {inspectorTelemetry.rangeRateKmS > 0 ? `+${inspectorTelemetry.rangeRateKmS}` : inspectorTelemetry.rangeRateKmS} km/s
+                </span>
+                <span className="text-[10px] opacity-60 block truncate mt-0.5">
+                  {inspectorTelemetry.isApproaching ? 'Closing (Blue-Shift)' : 'Receding (Red-Shift)'}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-w-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider opacity-60 truncate">
+                Doppler Shift
+              </span>
+              <div className="mt-1">
+                <span className="text-sm sm:text-base font-extrabold text-current block truncate">
+                  {inspectorTelemetry.dopplerShiftHz > 0 ? `+${inspectorTelemetry.dopplerShiftHz.toLocaleString()}` : inspectorTelemetry.dopplerShiftHz.toLocaleString()} Hz
+                </span>
+                <span className="text-[10px] opacity-60 block truncate mt-0.5">
+                  X-Band (8.56 GHz)
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-w-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider opacity-60 truncate">
+                Radar Echo Delay
+              </span>
+              <div className="mt-1">
+                <span className="text-sm sm:text-base font-extrabold text-current block truncate">
+                  {inspectorTelemetry.radarRoundTripSeconds.toFixed(1)}s
+                </span>
+                <span className="text-[10px] opacity-60 block truncate mt-0.5">
+                  Round-trip (2d/c)
+                </span>
               </div>
             </div>
           </div>
-
-          {/* Real-time Telemetry Values */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-telemetry text-xs">
-            <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[9px] uppercase opacity-60 block">Instantaneous Range</span>
-              <span className="font-bold text-[#d9b43a]">
-                {inspectorTelemetry.distanceLunar.toFixed(3)} LD
-              </span>
-              <span className="text-[9px] opacity-60 block">
-                {inspectorTelemetry.distanceKm.toLocaleString()} km
-              </span>
-            </div>
-
-            <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[9px] uppercase opacity-60 block">Range Rate ($dr/dt$)</span>
-              <span className={`font-bold ${inspectorTelemetry.isApproaching ? 'text-emerald-400' : 'text-amber-400'}`}>
-                {inspectorTelemetry.rangeRateKmS > 0 ? `+${inspectorTelemetry.rangeRateKmS}` : inspectorTelemetry.rangeRateKmS} km/s
-              </span>
-              <span className="text-[9px] opacity-60 block">
-                {inspectorTelemetry.isApproaching ? 'Closing (Blue-Shift)' : 'Receding (Red-Shift)'}
-              </span>
-            </div>
-
-            <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[9px] uppercase opacity-60 block">Doppler Shift</span>
-              <span className="font-bold text-current">
-                {inspectorTelemetry.dopplerShiftHz > 0 ? `+${inspectorTelemetry.dopplerShiftHz}` : inspectorTelemetry.dopplerShiftHz} Hz
-              </span>
-              <span className="text-[9px] opacity-60 block">X-Band (8.56 GHz)</span>
-            </div>
-
-            <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[9px] uppercase opacity-60 block">Radar Echo Delay</span>
-              <span className="font-bold text-current">
-                {inspectorTelemetry.radarRoundTripSeconds}s
-              </span>
-              <span className="text-[9px] opacity-60 block">Round-trip (2d/c)</span>
-            </div>
-          </div>
-
-          {/* Action Button: Load into Kinetic Lab */}
-          {onOpenKineticLab && (
-            <button
-              onClick={() => onOpenKineticLab(activeInspectorTarget)}
-              className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-headline font-bold bg-[#f47b7b]/20 hover:bg-[#f47b7b]/30 text-[#f47b7b] border border-[#f47b7b]/40 transition-all active:scale-95 shrink-0"
-            >
-              <Flame size={14} />
-              <span>Simulate Kinetic Impact</span>
-            </button>
-          )}
         </div>
       )}
     </div>
