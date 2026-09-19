@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+@theme {
+  --color-space-1: #1d1f3a;
+  --color-space-2: #4c4f7b;
+  --color-space-3: #7c809c;
+  --color-space-4: #d9b43a;
+  --color-space-5: #f47b7b;
+
+  --color-c1: #1d1f3a;
+  --color-c2: #4c4f7b;
+  --color-c3: #7c809c;
+  --color-c4: #d9b43a;
+  --color-c5: #f47b7b;
+
+  --color-gold: #d9b43a;
+  --color-coral: #f47b7b;
+}
+
+@layer base {
+  :root {
+    --color-1: #1d1f3a;
+    --color-2: #4c4f7b;
+    --color-3: #7c809c;
+    --color-4: #d9b43a;
+    --color-5: #f47b7b;
+
+    --bg-color: #1d1f3a;
+    --text-primary: #F8FAFC;
+    --text-secondary: #C8CCDE;
+    --text-muted: #7c809c;
+
+    --glass-bg: rgba(76, 79, 123, 0.32);
+    --glass-border: rgba(124, 128, 156, 0.28);
+    --glass-border-subtle: rgba(124, 128, 156, 0.16);
+    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 12px 36px 0 rgba(10, 11, 24, 0.45);
+    --glass-blur: 24px;
+
+    --hazard-glow: rgba(244, 123, 123, 0.35);
+    --hazard-glow-solid: #f47b7b;
+    --accent-gold: #d9b43a;
+    --accent-cyan: #d9b43a;
+    --nominal-green: #34d399;
+
+    --card-surface: rgba(76, 79, 123, 0.42);
+    --sidebar-surface: rgba(29, 31, 58, 0.95);
+    --header-surface: rgba(29, 31, 58, 0.92);
+  }
+
+  .light {
+    --color-1: #1d1f3a;
+    --color-2: #4c4f7b;
+    --color-3: #7c809c;
+    --color-4: #d9b43a;
+    --color-5: #f47b7b;
+
+    --bg-color: #EDF0F7;
+    --text-primary: #1d1f3a;
+    --text-secondary: #4c4f7b;
+    --text-muted: #7c809c;
+
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(124, 128, 156, 0.3);
+    --glass-border-subtle: rgba(76, 79, 123, 0.1);
+    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+    --glass-shadow: 0 12px 36px 0 rgba(29, 31, 58, 0.08);
+    --glass-blur: 28px;
+
+    --hazard-glow: rgba(244, 123, 123, 0.25);
+    --hazard-glow-solid: #f47b7b;
+    --accent-gold: #c29c29;
+    --accent-cyan: #c29c29;
+    --nominal-green: #059669;
+
+    --card-surface: rgba(255, 255, 255, 0.9);
+    --sidebar-surface: rgba(245, 247, 252, 0.94);
+    --header-surface: rgba(245, 247, 252, 0.92);
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1), color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+.font-headline {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.022em;
+}
+
+.font-telemetry {
+  font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* Apple-Style Glassmorphism Surfaces */
+.glass-panel {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+
+.glass-card {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(217, 180, 58, 0.45);
+  box-shadow: var(--glass-highlight), 0 16px 40px 0 rgba(10, 11, 24, 0.4);
+}
+
+.glass-card:active {
+  transform: scale(0.99);
+}
+
+/* Subtle Specular Highlight Button Pill */
+.glass-button {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button:active {
+  transform: scale(0.97);
+}
+
+/* Hazard Pulse Effect for PHA objects */
+@keyframes hazardBreathing {
+  0% {
+    box-shadow: 0 0 10px var(--hazard-glow);
+    border-color: rgba(244, 123, 123, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--hazard-glow);
+    border-color: rgba(244, 123, 123, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 10px var(--hazard-glow);
+    border-color: rgba(244, 123, 123, 0.35);
+  }
+}
+
+.hazard-pulse {
+  animation: hazardBreathing 2400ms infinite ease-in-out;
+}
+
+/* Radar rotation */
+@keyframes radarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar-beam {
+  transform-origin: center;
+  animation: radarSweep 8s linear infinite;
+}
+
+/* Apple-style ultra-thin discreet scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 128, 156, 0.35);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 180, 58, 0.6);
+}

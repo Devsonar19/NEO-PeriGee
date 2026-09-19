@@ -1,0 +1,6 @@
+{
+  "name": "NEO-PeriGee",
+  "description": "Real-time Near-Earth Object threat assessment dashboard with kinetic impact modeling, NASA NeoWs telemetry, and adaptive glassmorphic themes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
