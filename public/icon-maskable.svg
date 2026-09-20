@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGradMask" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e2246"/>
+      <stop offset="70%" stop-color="#141629"/>
+      <stop offset="100%" stop-color="#0b0d18"/>
+    </radialGradient>
+    <linearGradient id="orbitGradMask" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f47b7b" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#d9b43a" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="earthGradMask" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="50%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </radialGradient>
+    <radialGradient id="neoGradMask" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="60%" stop-color="#d9b43a"/>
+      <stop offset="100%" stop-color="#854d0e"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Full bleed background for Android maskable crops -->
+  <rect width="512" height="512" fill="url(#bgGradMask)"/>
+
+  <!-- Scaled within 80% safe zone (center 410x410) -->
+  <g transform="translate(51, 51) scale(0.8)">
+    <!-- Radar Scope Coordinate Rings -->
+    <circle cx="256" cy="256" r="190" fill="none" stroke="#4c4f7b" stroke-width="4" stroke-dasharray="8 6" stroke-opacity="0.4"/>
+    <circle cx="256" cy="256" r="125" fill="none" stroke="#7c809c" stroke-width="3" stroke-dasharray="6 6" stroke-opacity="0.5"/>
+    <circle cx="256" cy="256" r="60" fill="none" stroke="#d9b43a" stroke-width="2.5" stroke-dasharray="4 4" stroke-opacity="0.6"/>
+
+    <!-- Azimuth Crosshair Axes -->
+    <line x1="256" y1="56" x2="256" y2="456" stroke="#4c4f7b" stroke-width="2.5" stroke-dasharray="4 6" stroke-opacity="0.4"/>
+    <line x1="56" y1="256" x2="456" y2="256" stroke="#4c4f7b" stroke-width="2.5" stroke-dasharray="4 6" stroke-opacity="0.4"/>
+
+    <!-- Perigee Orbital Trajectory -->
+    <path d="M 80 430 C 130 290, 200 160, 390 100" fill="none" stroke="url(#orbitGradMask)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 80 430 C 130 290, 200 160, 390 100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="6 8" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Center: Earth (Terra) with Atmosphere Glow -->
+    <circle cx="256" cy="256" r="42" fill="#3b82f6" fill-opacity="0.2"/>
+    <circle cx="256" cy="256" r="30" fill="url(#earthGradMask)"/>
+    <path d="M 248 244 C 252 240, 264 246, 268 252 C 265 260, 258 266, 250 264 Z" fill="#10b981" fill-opacity="0.8"/>
+    <circle cx="256" cy="256" r="30" fill="none" stroke="#93c5fd" stroke-width="2.5" stroke-opacity="0.8"/>
+
+    <!-- Near-Earth Object (Asteroid) -->
+    <circle cx="340" cy="125" r="36" fill="none" stroke="#f47b7b" stroke-width="3.5" stroke-opacity="0.6" stroke-dasharray="4 3"/>
+    <circle cx="340" cy="125" r="22" fill="url(#neoGradMask)"/>
+    <circle cx="340" cy="125" r="22" fill="none" stroke="#fef08a" stroke-width="3"/>
+
+    <!-- Radar Vector to Center -->
+    <line x1="340" y1="125" x2="256" y2="256" stroke="#d9b43a" stroke-width="2.5" stroke-dasharray="4 4" stroke-opacity="0.7"/>
+  </g>
+</svg>

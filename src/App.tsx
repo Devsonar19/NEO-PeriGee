@@ -42,6 +42,8 @@ import {
   fetchTodayNeos, 
   FetchNeoResponse 
 } from './services/neoService';
+import { usePWAInstall } from './hooks/usePWAInstall';
+import { MobileInstallModal } from './components/MobileInstallModal';
 import { 
   NeoObject, 
   ThemeMode, 
@@ -98,6 +100,17 @@ export default function App() {
   const [isKineticLabOpen, setIsKineticLabOpen] = useState<boolean>(false);
   const [isNasaKeyModalOpen, setIsNasaKeyModalOpen] = useState<boolean>(false);
   const [isMobileDetailsOpen, setIsMobileDetailsOpen] = useState<boolean>(false);
+
+  // Progressive Web App Install State & Mobile Prompt Controller
+  const {
+    isInstallable,
+    isInstalled,
+    isIOS,
+    isModalOpen: isInstallModalOpen,
+    openModal: openInstallModal,
+    dismissModal: dismissInstallModal,
+    install: installPWA
+  } = usePWAInstall();
 
   // Sync theme with document element
   useEffect(() => {
@@ -218,6 +231,8 @@ export default function App() {
         onOpenNasaKeyModal={() => setIsNasaKeyModalOpen(true)}
         apiKeyType={telemetryMeta.apiKeyType}
         dataSource={telemetryMeta.source}
+        onOpenInstallModal={openInstallModal}
+        isAppInstalled={isInstalled}
       />
 
       {/* Main Framework Container */}
@@ -236,6 +251,8 @@ export default function App() {
           apiKeyType={telemetryMeta.apiKeyType}
           dataSource={telemetryMeta.source}
           onToggleTheme={handleToggleTheme}
+          onOpenInstallModal={openInstallModal}
+          isAppInstalled={isInstalled}
         />
 
         {/* Primary Content Container: md:pl-72 guarantees 288px lane for the fixed sidebar, eliminating screen overlap */}
@@ -481,6 +498,16 @@ export default function App() {
         initialNeo={selectedNeo}
         isOpen={isKineticLabOpen}
         onClose={() => setIsKineticLabOpen(false)}
+      />
+
+      {/* Mobile Web App Install Prompt Modal */}
+      <MobileInstallModal
+        isOpen={isInstallModalOpen}
+        onClose={dismissInstallModal}
+        onInstall={installPWA}
+        isInstallable={isInstallable}
+        isIOS={isIOS}
+        theme={theme}
       />
     </div>
   );

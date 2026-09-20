@@ -9,7 +9,9 @@ import {
   Layers,
   X,
   Sun,
-  Moon
+  Moon,
+  Download,
+  Smartphone
 } from 'lucide-react';
 import { NavigationTab, ThemeMode } from '../types';
 
@@ -26,6 +28,8 @@ interface SidebarProps {
   apiKeyType?: 'custom' | 'env' | 'demo';
   dataSource?: 'live' | 'cache' | 'offline_fallback';
   onToggleTheme?: () => void;
+  onOpenInstallModal?: () => void;
+  isAppInstalled?: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -40,7 +44,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenNasaKeyModal,
   apiKeyType = 'demo',
   dataSource = 'live',
-  onToggleTheme
+  onToggleTheme,
+  onOpenInstallModal,
+  isAppInstalled = false
 }) => {
   const sidebarRef = useRef<HTMLElement>(null);
 
@@ -234,6 +240,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Live Mission Telemetry Readouts, Theme & NASA API Status */}
         <div className="flex flex-col gap-3 pt-4 pb-6">
+          {/* Install Web App Card */}
+          {!isAppInstalled && onOpenInstallModal && (
+            <button
+              onClick={() => {
+                onOpenInstallModal();
+                onCloseMobile();
+              }}
+              className="p-3 rounded-2xl border flex items-center justify-between text-left transition-all active:scale-98 hover:border-[#d9b43a]/50 backdrop-blur-xl group w-full shadow-sm"
+              style={{
+                backgroundColor: 'rgba(217, 180, 58, 0.12)',
+                borderColor: 'rgba(217, 180, 58, 0.3)'
+              }}
+              title="Install NEO-PeriGee as Mobile or Desktop App"
+              id="sidebarInstallAppBtn"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="p-2 rounded-xl bg-[#d9b43a]/20 text-[#d9b43a] shrink-0 group-hover:scale-110 transition-transform">
+                  <Smartphone size={16} />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-headline font-bold text-current truncate flex items-center gap-1.5">
+                    Install Web App
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#d9b43a] animate-ping" />
+                  </span>
+                  <span className="text-[10px] font-telemetry opacity-70 truncate mt-0.5">
+                    Full-screen mobile radar
+                  </span>
+                </div>
+              </div>
+              <div className="p-1.5 rounded-lg bg-[#d9b43a]/20 text-[#d9b43a] shrink-0">
+                <Download size={13} />
+              </div>
+            </button>
+          )}
+
           {/* Theme Display Console Control */}
           {onToggleTheme && (
             <div 

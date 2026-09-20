@@ -6,7 +6,8 @@ import {
   X, 
   ShieldAlert, 
   Satellite, 
-  Key
+  Key,
+  Download
 } from 'lucide-react';
 import { ThemeMode, NavigationTab } from '../types';
 
@@ -22,6 +23,8 @@ interface HeaderProps {
   onOpenNasaKeyModal?: () => void;
   apiKeyType?: 'custom' | 'env' | 'demo';
   dataSource?: 'live' | 'cache' | 'offline_fallback';
+  onOpenInstallModal?: () => void;
+  isAppInstalled?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,7 +36,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenKineticLab,
   onOpenNasaKeyModal,
   apiKeyType = 'demo',
-  dataSource = 'live'
+  dataSource = 'live',
+  onOpenInstallModal,
+  isAppInstalled = false
 }) => {
   return (
     <header 
@@ -130,6 +135,26 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right: Quick Action Controls */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Install Web App Action Button */}
+          {!isAppInstalled && onOpenInstallModal && (
+            <button
+              onClick={onOpenInstallModal}
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-headline font-semibold border transition-all active:scale-95 min-h-[36px] sm:min-h-[38px] backdrop-blur-md shrink-0 shadow-sm"
+              style={{
+                backgroundColor: 'rgba(217, 180, 58, 0.16)',
+                borderColor: 'rgba(217, 180, 58, 0.35)',
+                color: '#d9b43a'
+              }}
+              title="Install NEO-PeriGee Web App on Device"
+              id="headerInstallPwaBtn"
+            >
+              <Download size={13} className="shrink-0 animate-bounce" />
+              <span className="font-telemetry text-xs font-bold">
+                Install
+              </span>
+            </button>
+          )}
+
           {/* NASA API Key Status Pill */}
           {onOpenNasaKeyModal && (
             <button

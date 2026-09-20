@@ -132,6 +132,15 @@ The dashboard supports two display modes optimized for data legibility:
 
 ---
 
+## Progressive Web App (PWA) Support
+
+NEO-PeriGee functions as a fully compliant Progressive Web App:
+- **Mobile Installation**: Users can install the application directly to their mobile home screen for a standalone, full-screen radar experience without browser navigation chrome.
+- **Offline Caching**: Built with Service Worker precaching via Workbox, preserving telemetry caches and kinetic modeling calculators during intermittent network connectivity.
+- **Platform Support**: Supports native `beforeinstallprompt` on Chromium-based browsers (Android, Chrome, Edge, Samsung Internet) and structured step-by-step installation instructions on iOS Mobile Safari.
+
+---
+
 ## License
 
 This project is open source and available under the MIT License.
